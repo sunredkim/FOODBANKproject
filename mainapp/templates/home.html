@@ -1,0 +1,1351 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<head>
+    <style>
+
+            table {
+              margin: 0 auto;
+              text-align: center;
+              border-collapse: collapse;
+              border: 1px solid #d4d4d4;
+            }
+
+            tr:nth-child(even) {
+              background: #d4d4d4;
+            }
+
+            th, td {
+              padding: 10px 30px;
+            }
+
+            th {
+              border-bottom: 1px solid #d4d4d4;
+            }
+    </style>
+</head>
+<body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+            <div class="container">
+                <a class="navbar-brand js-scroll-trigger" href="{% url 'home'%}#page-top"><h1 style="color:white; float:left; margin-left:20px; ">Food HERO</h1></a>
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars ml-1"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav text-uppercase ml-auto">
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'home'%}#aboutus">About Us</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'home'%}#portfolio">대표 물품</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'home'%}#foodmap">푸드뱅크는</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'foodBankMap' %}">푸드뱅크 지도</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'centerItem' %}">물품 조회</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'board' %}">게시판</a></li>
+                        {% if user_name %}
+                  <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" onclick="return false;">{{user_name}} 님!</a>
+                     <ul class="dropdown-menu">
+                       <li><a class="dropdown-item" href="{% url 'mypage' %}">내 정보</a></li>
+                       <li><a class="dropdown-item" href="{% url 'logout'%}?next={{request.get_full_path}}">Log Out!!</a></li>
+                     </ul>
+                  </li>
+                 {% else %}
+                  <li class="nav-item"><a class="nav-link" href="{% url 'login'%}?next={{request.get_full_path}}">Log in</a></li>
+                 {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Masthead-->
+        <header class="masthead">
+            <div class="container">
+                <div class="masthead-subheading">희망의 사다리가 되겠습니다.</div>
+                <div class="masthead-heading text-uppercase">FoodHERO</div>
+                <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#aboutus">Tell Me More</a>
+            </div>
+        </header>
+        <!-- About Us-->
+        <section class="page-section" id="aboutus">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-heading text-uppercase">About us</h2>
+                    <p class="text-muted">당장 끼니를 걱정하고 있나요? </p>
+                    <p class="text-muted">푸드히어로가 희망의 사다리가 되겠습니다.</p>
+                    <p class="text-muted">저희는 서울특별시에 위치한 푸드뱅크의 정보를 제공합니다.</p>
+                </div>
+                <br>
+                <br>
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <span class="max-auto rounded-circle">
+                            <h1 class="counter">34</h1>
+                        </span>
+                        <h5 class="my-3">푸드뱅크 수</h5>
+                        <p class="text-muted1">서울시에 위치한 모든 푸드뱅크의 수</p>
+                        <p class="text-muted">가장 따뜻한 가치를 창출하겠습니다.
+                            푸드뱅크에서는 긴급구호식품 지원을 위한 ‘이머전시 푸드팩 사업’을 시범적으로 운영합니다.
+                            개인이 3일 동안 먹을 수 있는 식품이 담긴 이머전시 푸드팩을 매월 50개 제공합니다.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h1 class="counter">14</h1>
+                        <h5 class="my-3">선호 식품</h5>
+                        <p class="text-muted1">푸드뱅크 이용자들이 필요로 하는 물품의 종류</p>
+                        <p class="text-muted">
+                            당장 오늘 먹을 음식이 없지만 푸드뱅크를 이용해 보신 적이 없는 분들은 지금 푸드뱅크를 방문해주세요.
+                            푸드뱅크는 이 사업을 통해 복지 사각지대를 해소하고 결식계층 제로 사회에 더 가까워질 수 있도록 노력하겠습니다.</p>
+
+                    </div>
+                    <div class="col-md-4">
+                        <h1 class="counter">29</h1>
+                        <h5 class="my-3">총 식품 종류</h5>
+                        <p class="text-muted1">푸드뱅크에서 제공하는 식품의 종류</p>
+                        <p class="text-muted">이제 푸드뱅크는 단순히 굶주림을 해소하는 차원을 넘어 미래를 향해 나아갑니다.
+                            이용자들의 영양개선을 고려한 신선식품 비중 확대, 식품기부 및 이용절차를 간소화한 푸드뱅크, 지역자원을 활용한 지역순환형 커뮤니티 빌딩 구축은 푸드히어로의 지향점입니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- 대표 메뉴 -->
+         <section class="page-section bg-light" id="portfolio">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-heading text-uppercase">대표물품</h2>
+                    <h3 class="section-subheading text-muted">FoodHero, 기부하는 당신이 히어로입니다</h3>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-sm-6 mb-4">
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-toggle="modal" href="#portfolioModal1">
+                                <div class="portfolio-hover">
+                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-product" src="{% static 'assets/img/products/1.jpg' %}" alt="" />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">라면</div>
+                                <div class="portfolio-caption-subheading text-muted">Instant Noodle</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 mb-4">
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-toggle="modal" href="#portfolioModal2">
+                                <div class="portfolio-hover">
+                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-product" src="{% static 'assets/img/products/2.jpg' %}" alt="" />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">쌀</div>
+                                <div class="portfolio-caption-subheading text-muted">Rice</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 mb-4">
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-toggle="modal" href="#portfolioModal3">
+                                <div class="portfolio-hover">
+                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-product" src="{% static 'assets/img/products/3.jpg' %}" alt="" />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">밀가루</div>
+                                <div class="portfolio-caption-subheading text-muted">Wheet Flour</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 mb-4">
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-toggle="modal" href="#portfolioModal4">
+                                <div class="portfolio-hover">
+                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-product" src="{% static 'assets/img/products/4.jpg' %}" alt="" />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">고추장</div>
+                                <div class="portfolio-caption-subheading text-muted">Red Pepper Paste</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 mb-4">
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-toggle="modal" href="#portfolioModal5">
+                                <div class="portfolio-hover">
+                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-product" src="{% static 'assets/img/products/5.jpg' %}" alt="" />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">된장</div>
+                                <div class="portfolio-caption-subheading text-muted">Soybean Paste</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 mb-4">
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-toggle="modal" href="#portfolioModal6">
+                                <div class="portfolio-hover">
+                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-product" src="{% static 'assets/img/products/6.jpg' %}" alt="" />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">참기름</div>
+                                <div class="portfolio-caption-subheading text-muted">Sesame Oil</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 mb-4">
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-toggle="modal" href="#portfolioModal7">
+                                <div class="portfolio-hover">
+                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-product" src="{% static 'assets/img/products/7.jpg' %}" alt="" />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">가공햄류</div>
+                                <div class="portfolio-caption-subheading text-muted">Instant Ham</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 mb-4">
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-toggle="modal" href="#portfolioModal8">
+                                <div class="portfolio-hover">
+                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-product" src="{% static 'assets/img/products/8.jpg' %}" alt="" />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">식용유</div>
+                                <div class="portfolio-caption-subheading text-muted">Cooking Oil</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 mb-4">
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-toggle="modal" href="#portfolioModal9">
+                                <div class="portfolio-hover">
+                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-product" src="{% static 'assets/img/products/9.jpg' %}" alt="" />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">통조림</div>
+                                <div class="portfolio-caption-subheading text-muted">Can</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 mb-4">
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-toggle="modal" href="#portfolioModal10">
+                                <div class="portfolio-hover">
+                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-product" src="{% static 'assets/img/products/10.jpg' %}" alt="" />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">설탕</div>
+                                <div class="portfolio-caption-subheading text-muted">Sugar</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 mb-4">
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-toggle="modal" href="#portfolioModal11">
+                                <div class="portfolio-hover">
+                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-product" src="{% static 'assets/img/products/11.jpg' %}" alt="" />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">간장</div>
+                                <div class="portfolio-caption-subheading text-muted">Soy Sauce</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 mb-4">
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-toggle="modal" href="#portfolioModal12">
+                                <div class="portfolio-hover">
+                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-product" src="{% static 'assets/img/products/12.jpg' %}" alt="" />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">국수(소면류)</div>
+                                <div class="portfolio-caption-subheading text-muted">Noodle</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 mb-4">
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-toggle="modal" href="#portfolioModal13">
+                                <div class="portfolio-hover">
+                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-product" src="{% static 'assets/img/products/13.jpg' %}" alt="" />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">김</div>
+                                <div class="portfolio-caption-subheading text-muted">Dried Laver</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 mb-4">
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-toggle="modal" href="#portfolioModal14">
+                                <div class="portfolio-hover">
+                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-product" src="{% static 'assets/img/products/14.jpg' %}" alt="" />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">즉석밥</div>
+                                <div class="portfolio-caption-subheading text-muted">Instant Rice</div>
+                            </div>
+                        </div>
+                    </div>
+        <!-- 기부방법-->
+       <section class="page-section" id="foodmap"  >
+
+            <div class="container" style="font-family:서울한강체">
+                <div class="text-center" style="font-family:서울한강체">
+                    <h2 class="section-heading text-uppercase" style="font-family:서울한강체">푸드뱅크는</h2>
+                    <h3 class="section-subheading text-muted" style="font-family:서울한강체">보건복지부 산하 공공기관인 한국사회복지협의회에서 수행하는 사업입니다.</h3>
+                </div>
+                <ul class="timeline">
+                    <li>
+                        <div class="timeline-image"><img class="rounded-circle img-fluid" src='{% static "assets/img/about/1.jpg" %}'alt="" /></div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading" style="font-family:서울한강체">
+
+                                <h4 class="subheading">01</h4>
+                            </div>
+                            <div class="timeline-body"><p class="text-muted" style="font-family:서울한강체">기업 및 개인으로부터 식품 및 생활용품을 기부받아 결식아동, 독거노인 등 저소득 소외계층에게 지원하는 물적 나눔제도입니다.</p></div>
+                        </div>
+                    </li>
+                    <li class="timeline-inverted">
+                        <div class="timeline-image"><img class="rounded-circle img-fluid" src='{% static "assets/img/about/2.jpg" %}'alt="" /></div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading" style="font-family:서울한강체">
+
+                                <h4 class="subheading">02</h4>
+                            </div>
+                            <div class="timeline-body"><p class="text-muted" style="font-family:서울한강체">1960년대 후반 미국에서 생겨났으며, 우리나라 푸드뱅크는 1998년 IMF 경기위기 이후 급격히 증가한 노숙인 및 결식아동의 급식문제를 해결하기 위해 시작되었습니다.</p></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="timeline-image"><img class="rounded-circle img-fluid" src='{% static "assets/img/about/3.jpg" %}' alt="" /></div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading" style="font-family:서울한강체">
+
+                                <h4 class="subheading">03</h4>
+                            </div>
+                            <div class="timeline-body"><p class="text-muted" style="font-family:서울한강체">"전국푸드뱅크(중앙물류센터) - 17개 광역푸드뱅크 - 450여개 기초푸드뱅크&마켓"으로 조직된 우리나라 최대의 물적나눔 시스템입니다.</p></div>
+                        </div>
+                    </li>
+                    <li class="timeline-inverted">
+                        <div class="timeline-image"><img class="rounded-circle img-fluid" src='{% static "assets/img/about/4.jpg" %}'alt="" /></div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading" style="font-family:서울한강체">
+
+                                <h4 class="subheading">04</h4>
+                            </div>
+                            <div class="timeline-body">
+                                <p class="text-muted" style="font-family:서울한강체">기부, 어렵지 않아요. 기업도 개인도 손쉽게 할 수 있습니다. </p>
+                                <p class="text-muted" style="font-family:서울한강체">대량기부: 02-713-1377</p>
+                                <p class="text-muted" style="font-family:서울한강체">소량기부: 1688-1377</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="timeline-inverted" style="font-family:서울한강체">
+                        <div class="timeline-image" style="font-family:서울한강체">
+                            <h4 style="font-family:서울한강체">
+                                Thank You
+                                <br />
+                                For Your
+                                <br />
+                                Donation!
+                            </h4>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Modal 1-->
+        <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="close-modal" data-dismiss="modal"><img src="{% static 'assets/img/close-icon.svg' %}" alt="Close modal" /></div>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="modal-body">
+                                    <!-- Project Details Go Here-->
+                                    <h2 class="text-uppercase">라면</h2>
+                                    <div id="list_table1"> </div>
+                                    <button class="btn btn-primary" data-dismiss="modal" type="button">
+                                        <i class="fas fa-times mr-1"></i>
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal 2-->
+        <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="close-modal" data-dismiss="modal"><img src="{% static 'assets/img/close-icon.svg' %}" alt="Close modal" /></div>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="modal-body">
+                                    <!-- Project Details Go Here-->
+                                    <h2 class="text-uppercase">쌀</h2>
+                                    <div id="list_table2"> </div>
+                                    <button class="btn btn-primary" data-dismiss="modal" type="button">
+                                        <i class="fas fa-times mr-1"></i>
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal 3-->
+        <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="close-modal" data-dismiss="modal"><img src="{% static 'assets/img/close-icon.svg' %}" alt="Close modal" /></div>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="modal-body">
+                                    <!-- Project Details Go Here-->
+                                    <h2 class="text-uppercase">밀가루</h2>
+                                    <div id="list_table3"> </div>
+                                    <button class="btn btn-primary" data-dismiss="modal" type="button">
+                                        <i class="fas fa-times mr-1"></i>
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal 4-->
+        <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="close-modal" data-dismiss="modal"><img src="{% static 'assets/img/close-icon.svg' %}" alt="Close modal" /></div>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="modal-body">
+                                    <!-- Project Details Go Here-->
+                                    <h2 class="text-uppercase">고추장</h2>
+                                    <div id="list_table4"> </div>
+                                    <button class="btn btn-primary" data-dismiss="modal" type="button">
+                                        <i class="fas fa-times mr-1"></i>
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal 5-->
+        <div class="portfolio-modal modal fade" id="portfolioModal5" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="close-modal" data-dismiss="modal"><img src="{% static 'assets/img/close-icon.svg' %}" alt="Close modal" /></div>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="modal-body">
+                                    <!-- Project Details Go Here-->
+                                    <h2 class="text-uppercase">된장</h2>
+                                    <div id="list_table5"> </div>
+                                    <button class="btn btn-primary" data-dismiss="modal" type="button">
+                                        <i class="fas fa-times mr-1"></i>
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+         <!-- Modal 6-->
+        <div class="portfolio-modal modal fade" id="portfolioModal6" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="close-modal" data-dismiss="modal"><img src="{% static 'assets/img/close-icon.svg' %}" alt="Close modal" /></div>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="modal-body">
+                                    <!-- Project Details Go Here-->
+                                    <h2 class="text-uppercase">참기름</h2>
+                                    <div id="list_table6"> </div>
+                                    <button class="btn btn-primary" data-dismiss="modal" type="button">
+                                        <i class="fas fa-times mr-1"></i>
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal 7-->
+        <div class="portfolio-modal modal fade" id="portfolioModal7" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="close-modal" data-dismiss="modal"><img src="{% static 'assets/img/close-icon.svg' %}" alt="Close modal" /></div>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="modal-body">
+                                    <!-- Project Details Go Here-->
+                                    <h2 class="text-uppercase">가공햄류</h2>
+                                    <div id="list_table7"> </div>
+                                    <button class="btn btn-primary" data-dismiss="modal" type="button">
+                                        <i class="fas fa-times mr-1"></i>
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal 8-->
+        <div class="portfolio-modal modal fade" id="portfolioModal8" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="close-modal" data-dismiss="modal"><img src="{% static 'assets/img/close-icon.svg' %}" alt="Close modal" /></div>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="modal-body">
+                                    <!-- Project Details Go Here-->
+                                    <h2 class="text-uppercase">식용유</h2>
+                                    <div id="list_table8"> </div>
+                                    <button class="btn btn-primary" data-dismiss="modal" type="button">
+                                        <i class="fas fa-times mr-1"></i>
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal 9-->
+        <div class="portfolio-modal modal fade" id="portfolioModal9" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="close-modal" data-dismiss="modal"><img src="{% static 'assets/img/close-icon.svg' %}" alt="Close modal" /></div>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="modal-body">
+                                    <!-- Project Details Go Here-->
+                                    <h2 class="text-uppercase">통조림</h2>
+                                    <div id="list_table9"> </div>
+                                    <button class="btn btn-primary" data-dismiss="modal" type="button">
+                                        <i class="fas fa-times mr-1"></i>
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal 10-->
+        <div class="portfolio-modal modal fade" id="portfolioModal10" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="close-modal" data-dismiss="modal"><img src="{% static 'assets/img/close-icon.svg' %}" alt="Close modal" /></div>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="modal-body">
+                                    <!-- Project Details Go Here-->
+                                    <h2 class="text-uppercase">설탕</h2>
+                                    <div id="list_table10"> </div>
+                                    <button class="btn btn-primary" data-dismiss="modal" type="button">
+                                        <i class="fas fa-times mr-1"></i>
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal 11-->
+        <div class="portfolio-modal modal fade" id="portfolioModal11" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="close-modal" data-dismiss="modal"><img src="{% static 'assets/img/close-icon.svg' %}" alt="Close modal" /></div>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="modal-body">
+                                    <!-- Project Details Go Here-->
+                                    <h2 class="text-uppercase">간장</h2>
+                                    <div id="list_table11"> </div>
+                                    <button class="btn btn-primary" data-dismiss="modal" type="button">
+                                        <i class="fas fa-times mr-1"></i>
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal 12-->
+        <div class="portfolio-modal modal fade" id="portfolioModal12" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="close-modal" data-dismiss="modal"><img src="{% static 'assets/img/close-icon.svg' %}" alt="Close modal" /></div>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="modal-body">
+                                    <!-- Project Details Go Here-->
+                                    <h2 class="text-uppercase">국수(소면류)</h2>
+                                    <div id="list_table12"> </div>
+                                    <button class="btn btn-primary" data-dismiss="modal" type="button">
+                                        <i class="fas fa-times mr-1"></i>
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal 13-->
+        <div class="portfolio-modal modal fade" id="portfolioModal13" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="close-modal" data-dismiss="modal"><img src="{% static 'assets/img/close-icon.svg' %}" alt="Close modal" /></div>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="modal-body">
+                                    <!-- Project Details Go Here-->
+                                    <h2 class="text-uppercase">김</h2>
+                                    <div id="list_table13"> </div>
+                                    <button class="btn btn-primary" data-dismiss="modal" type="button">
+                                        <i class="fas fa-times mr-1"></i>
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal 14-->
+        <div class="portfolio-modal modal fade" id="portfolioModal14" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="close-modal" data-dismiss="modal"><img src="{% static 'assets/img/close-icon.svg' %}" alt="Close modal" /></div>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="modal-body">
+                                    <!-- Project Details Go Here-->
+                                    <h2 class="text-uppercase">즉석밥</h2>
+                                    <div id="list_table14"> </div>
+                                    <button class="btn btn-primary" data-dismiss="modal" type="button">
+                                        <i class="fas fa-times mr-1"></i>
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<script>
+///csv2html_1
+$(document).ready(function(){
+  $.ajax({
+   url:"/static/prefer.csv",
+   dataType:"text",
+   success:function(data)
+   {
+    var allRows = data.split(/\r?\n|\r/);
+    var table = '<table>';
+    for (var singleRow = 0; singleRow < allRows.length; singleRow++) {
+        if (singleRow === 0) {
+            table += '<thead>'; //thead:열의 제목으로 구성된 행의 집합(한번만 사용)
+            table += '<tr>'; //행
+        } else {
+            table += '<tr>'; //행
+        }
+        var rowCells = allRows[singleRow].split(',');
+        for (var rowCell = 0; rowCell < rowCells.length; rowCell++) {
+            console.log('[' + rowCells[2] +']')
+            if (singleRow === 0) {
+                table += '<th>'; //열의 제목이 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</th>'; //열의 제목이 들어가는 셀
+            }else if (rowCells[1] == '라면류' ) {
+                table += '<td>'; //내용에 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</td>'; //내용이 들어가는 셀
+            }else {
+                continue;
+             }
+        }
+        if (singleRow === 0) {
+            table += '</tr>'; //행
+            table += '</thead>'; //열의 제목
+            table += '<tbody>'; //본문에 해당
+        } else {
+            table += '</tr>'; //행
+        }
+    }
+    table += '</tbody>';
+    table += '</table>';
+    $('#list_table1').html(table);
+   }
+  });
+});
+
+///csv2html_2
+$(document).ready(function(){
+  $.ajax({
+   url:"/static/prefer.csv",
+   dataType:"text",
+   success:function(data)
+   {
+    var allRows = data.split(/\r?\n|\r/);
+    var table = '<table>';
+    for (var singleRow = 0; singleRow < allRows.length; singleRow++) {
+        if (singleRow === 0) {
+            table += '<thead>'; //thead:열의 제목으로 구성된 행의 집합(한번만 사용)
+            table += '<tr>'; //행
+        } else {
+            table += '<tr>'; //행
+        }
+        var rowCells = allRows[singleRow].split(',');
+        for (var rowCell = 0; rowCell < rowCells.length; rowCell++) {
+            console.log('[' + rowCells[2] +']')
+            if (singleRow === 0) {
+                table += '<th>'; //열의 제목이 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</th>'; //열의 제목이 들어가는 셀
+            }else if (rowCells[1] == '쌀/곡식류' ) {
+                table += '<td>'; //내용에 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</td>'; //내용이 들어가는 셀
+            }else {
+                continue;
+             }
+        }
+        if (singleRow === 0) {
+            table += '</tr>'; //행
+            table += '</thead>'; //열의 제목
+            table += '<tbody>'; //본문에 해당
+        } else {
+            table += '</tr>'; //행
+        }
+    }
+    table += '</tbody>';
+    table += '</table>';
+    $('#list_table2').html(table);
+   }
+  });
+});
+
+///csv2html_3
+$(document).ready(function(){
+  $.ajax({
+   url:"/static/prefer.csv",
+   dataType:"text",
+   success:function(data)
+   {
+    var allRows = data.split(/\r?\n|\r/);
+    var table = '<table>';
+    for (var singleRow = 0; singleRow < allRows.length; singleRow++) {
+        if (singleRow === 0) {
+            table += '<thead>'; //thead:열의 제목으로 구성된 행의 집합(한번만 사용)
+            table += '<tr>'; //행
+        } else {
+            table += '<tr>'; //행
+        }
+        var rowCells = allRows[singleRow].split(',');
+        for (var rowCell = 0; rowCell < rowCells.length; rowCell++) {
+            console.log('[' + rowCells[2] +']')
+            if (singleRow === 0) {
+                table += '<th>'; //열의 제목이 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</th>'; //열의 제목이 들어가는 셀
+            }else if (rowCells[1] == '밀가루(류)' ) {
+                table += '<td>'; //내용에 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</td>'; //내용이 들어가는 셀
+            }else {
+                continue;
+             }
+        }
+        if (singleRow === 0) {
+            table += '</tr>'; //행
+            table += '</thead>'; //열의 제목
+            table += '<tbody>'; //본문에 해당
+        } else {
+            table += '</tr>'; //행
+        }
+    }
+    table += '</tbody>';
+    table += '</table>';
+    $('#list_table3').html(table);
+   }
+  });
+});
+
+///csv2html_4
+$(document).ready(function(){
+  $.ajax({
+   url:"/static/prefer.csv",
+   dataType:"text",
+   success:function(data)
+   {
+    var allRows = data.split(/\r?\n|\r/);
+    var table = '<table>';
+    for (var singleRow = 0; singleRow < allRows.length; singleRow++) {
+        if (singleRow === 0) {
+            table += '<thead>'; //thead:열의 제목으로 구성된 행의 집합(한번만 사용)
+            table += '<tr>'; //행
+        } else {
+            table += '<tr>'; //행
+        }
+        var rowCells = allRows[singleRow].split(',');
+        for (var rowCell = 0; rowCell < rowCells.length; rowCell++) {
+            console.log('[' + rowCells[2] +']')
+            if (singleRow === 0) {
+                table += '<th>'; //열의 제목이 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</th>'; //열의 제목이 들어가는 셀
+            }else if (rowCells[1] == '고추장(류)' ) {
+                table += '<td>'; //내용에 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</td>'; //내용이 들어가는 셀
+            }else {
+                continue;
+             }
+        }
+        if (singleRow === 0) {
+            table += '</tr>'; //행
+            table += '</thead>'; //열의 제목
+            table += '<tbody>'; //본문에 해당
+        } else {
+            table += '</tr>'; //행
+        }
+    }
+    table += '</tbody>';
+    table += '</table>';
+    $('#list_table4').html(table);
+   }
+  });
+});
+
+///csv2html_5
+$(document).ready(function(){
+  $.ajax({
+   url:"/static/prefer.csv",
+   dataType:"text",
+   success:function(data)
+   {
+    var allRows = data.split(/\r?\n|\r/);
+    var table = '<table>';
+    for (var singleRow = 0; singleRow < allRows.length; singleRow++) {
+        if (singleRow === 0) {
+            table += '<thead>'; //thead:열의 제목으로 구성된 행의 집합(한번만 사용)
+            table += '<tr>'; //행
+        } else {
+            table += '<tr>'; //행
+        }
+        var rowCells = allRows[singleRow].split(',');
+        for (var rowCell = 0; rowCell < rowCells.length; rowCell++) {
+            console.log('[' + rowCells[2] +']')
+            if (singleRow === 0) {
+                table += '<th>'; //열의 제목이 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</th>'; //열의 제목이 들어가는 셀
+            }else if (rowCells[1] == '된장(류)' ) {
+                table += '<td>'; //내용에 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</td>'; //내용이 들어가는 셀
+            }else {
+                continue;
+             }
+        }
+        if (singleRow === 0) {
+            table += '</tr>'; //행
+            table += '</thead>'; //열의 제목
+            table += '<tbody>'; //본문에 해당
+        } else {
+            table += '</tr>'; //행
+        }
+    }
+    table += '</tbody>';
+    table += '</table>';
+    $('#list_table5').html(table);
+   }
+  });
+});
+
+///csv2html_6
+$(document).ready(function(){
+  $.ajax({
+   url:"/static/prefer.csv",
+   dataType:"text",
+   success:function(data)
+   {
+    var allRows = data.split(/\r?\n|\r/);
+    var table = '<table>';
+    for (var singleRow = 0; singleRow < allRows.length; singleRow++) {
+        if (singleRow === 0) {
+            table += '<thead>'; //thead:열의 제목으로 구성된 행의 집합(한번만 사용)
+            table += '<tr>'; //행
+        } else {
+            table += '<tr>'; //행
+        }
+        var rowCells = allRows[singleRow].split(',');
+        for (var rowCell = 0; rowCell < rowCells.length; rowCell++) {
+            console.log('[' + rowCells[2] +']')
+            if (singleRow === 0) {
+                table += '<th>'; //열의 제목이 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</th>'; //열의 제목이 들어가는 셀
+            }else if (rowCells[1] == '참기름' ) {
+                table += '<td>'; //내용에 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</td>'; //내용이 들어가는 셀
+            }else {
+                continue;
+             }
+        }
+        if (singleRow === 0) {
+            table += '</tr>'; //행
+            table += '</thead>'; //열의 제목
+            table += '<tbody>'; //본문에 해당
+        } else {
+            table += '</tr>'; //행
+        }
+    }
+    table += '</tbody>';
+    table += '</table>';
+    $('#list_table6').html(table);
+   }
+  });
+});
+
+///csv2html_7
+$(document).ready(function(){
+  $.ajax({
+   url:"/static/prefer.csv",
+   dataType:"text",
+   success:function(data)
+   {
+    var allRows = data.split(/\r?\n|\r/);
+    var table = '<table>';
+    for (var singleRow = 0; singleRow < allRows.length; singleRow++) {
+        if (singleRow === 0) {
+            table += '<thead>'; //thead:열의 제목으로 구성된 행의 집합(한번만 사용)
+            table += '<tr>'; //행
+        } else {
+            table += '<tr>'; //행
+        }
+        var rowCells = allRows[singleRow].split(',');
+        for (var rowCell = 0; rowCell < rowCells.length; rowCell++) {
+            console.log('[' + rowCells[2] +']')
+            if (singleRow === 0) {
+                table += '<th>'; //열의 제목이 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</th>'; //열의 제목이 들어가는 셀
+            }else if (rowCells[1] == '가공햄류' ) {
+                table += '<td>'; //내용에 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</td>'; //내용이 들어가는 셀
+            }else {
+                continue;
+             }
+        }
+        if (singleRow === 0) {
+            table += '</tr>'; //행
+            table += '</thead>'; //열의 제목
+            table += '<tbody>'; //본문에 해당
+        } else {
+            table += '</tr>'; //행
+        }
+    }
+    table += '</tbody>';
+    table += '</table>';
+    $('#list_table7').html(table);
+   }
+  });
+});
+
+///csv2html_8
+$(document).ready(function(){
+  $.ajax({
+   url:"/static/prefer.csv",
+   dataType:"text",
+   success:function(data)
+   {
+    var allRows = data.split(/\r?\n|\r/);
+    var table = '<table>';
+    for (var singleRow = 0; singleRow < allRows.length; singleRow++) {
+        if (singleRow === 0) {
+            table += '<thead>'; //thead:열의 제목으로 구성된 행의 집합(한번만 사용)
+            table += '<tr>'; //행
+        } else {
+            table += '<tr>'; //행
+        }
+        var rowCells = allRows[singleRow].split(',');
+        for (var rowCell = 0; rowCell < rowCells.length; rowCell++) {
+            console.log('[' + rowCells[2] +']')
+            if (singleRow === 0) {
+                table += '<th>'; //열의 제목이 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</th>'; //열의 제목이 들어가는 셀
+            }else if (rowCells[1] == '식용유(류)' ) {
+                table += '<td>'; //내용에 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</td>'; //내용이 들어가는 셀
+            }else {
+                continue;
+             }
+        }
+        if (singleRow === 0) {
+            table += '</tr>'; //행
+            table += '</thead>'; //열의 제목
+            table += '<tbody>'; //본문에 해당
+        } else {
+            table += '</tr>'; //행
+        }
+    }
+    table += '</tbody>';
+    table += '</table>';
+    $('#list_table8').html(table);
+   }
+  });
+});
+
+///csv2html_9
+$(document).ready(function(){
+  $.ajax({
+   url:"/static/prefer.csv",
+   dataType:"text",
+   success:function(data)
+   {
+    var allRows = data.split(/\r?\n|\r/);
+    var table = '<table>';
+    for (var singleRow = 0; singleRow < allRows.length; singleRow++) {
+        if (singleRow === 0) {
+            table += '<thead>'; //thead:열의 제목으로 구성된 행의 집합(한번만 사용)
+            table += '<tr>'; //행
+        } else {
+            table += '<tr>'; //행
+        }
+        var rowCells = allRows[singleRow].split(',');
+        for (var rowCell = 0; rowCell < rowCells.length; rowCell++) {
+            console.log('[' + rowCells[2] +']')
+            if (singleRow === 0) {
+                table += '<th>'; //열의 제목이 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</th>'; //열의 제목이 들어가는 셀
+            }else if (rowCells[1] == '통조림류' ) {
+                table += '<td>'; //내용에 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</td>'; //내용이 들어가는 셀
+            }else {
+                continue;
+             }
+        }
+        if (singleRow === 0) {
+            table += '</tr>'; //행
+            table += '</thead>'; //열의 제목
+            table += '<tbody>'; //본문에 해당
+        } else {
+            table += '</tr>'; //행
+        }
+    }
+    table += '</tbody>';
+    table += '</table>';
+    $('#list_table9').html(table);
+   }
+  });
+});
+
+///csv2html_10
+$(document).ready(function(){
+  $.ajax({
+   url:"/static/prefer.csv",
+   dataType:"text",
+   success:function(data)
+   {
+    var allRows = data.split(/\r?\n|\r/);
+    var table = '<table>';
+    for (var singleRow = 0; singleRow < allRows.length; singleRow++) {
+        if (singleRow === 0) {
+            table += '<thead>'; //thead:열의 제목으로 구성된 행의 집합(한번만 사용)
+            table += '<tr>'; //행
+        } else {
+            table += '<tr>'; //행
+        }
+        var rowCells = allRows[singleRow].split(',');
+        for (var rowCell = 0; rowCell < rowCells.length; rowCell++) {
+            console.log('[' + rowCells[2] +']')
+            if (singleRow === 0) {
+                table += '<th>'; //열의 제목이 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</th>'; //열의 제목이 들어가는 셀
+            }else if (rowCells[1] == '설탕(류)' ) {
+                table += '<td>'; //내용에 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</td>'; //내용이 들어가는 셀
+            }else {
+                continue;
+             }
+        }
+        if (singleRow === 0) {
+            table += '</tr>'; //행
+            table += '</thead>'; //열의 제목
+            table += '<tbody>'; //본문에 해당
+        } else {
+            table += '</tr>'; //행
+        }
+    }
+    table += '</tbody>';
+    table += '</table>';
+    $('#list_table10').html(table);
+   }
+  });
+});
+
+///csv2html_11
+$(document).ready(function(){
+  $.ajax({
+   url:"/static/prefer.csv",
+   dataType:"text",
+   success:function(data)
+   {
+    var allRows = data.split(/\r?\n|\r/);
+    var table = '<table>';
+    for (var singleRow = 0; singleRow < allRows.length; singleRow++) {
+        if (singleRow === 0) {
+            table += '<thead>'; //thead:열의 제목으로 구성된 행의 집합(한번만 사용)
+            table += '<tr>'; //행
+        } else {
+            table += '<tr>'; //행
+        }
+        var rowCells = allRows[singleRow].split(',');
+        for (var rowCell = 0; rowCell < rowCells.length; rowCell++) {
+            console.log('[' + rowCells[2] +']')
+            if (singleRow === 0) {
+                table += '<th>'; //열의 제목이 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</th>'; //열의 제목이 들어가는 셀
+            }else if (rowCells[1] == '간장(류)' ) {
+                table += '<td>'; //내용에 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</td>'; //내용이 들어가는 셀
+            }else {
+                continue;
+             }
+        }
+        if (singleRow === 0) {
+            table += '</tr>'; //행
+            table += '</thead>'; //열의 제목
+            table += '<tbody>'; //본문에 해당
+        } else {
+            table += '</tr>'; //행
+        }
+    }
+    table += '</tbody>';
+    table += '</table>';
+    $('#list_table11').html(table);
+   }
+  });
+});
+
+///csv2html_12
+$(document).ready(function(){
+  $.ajax({
+   url:"/static/prefer.csv",
+   dataType:"text",
+   success:function(data)
+   {
+    var allRows = data.split(/\r?\n|\r/);
+    var table = '<table>';
+    for (var singleRow = 0; singleRow < allRows.length; singleRow++) {
+        if (singleRow === 0) {
+            table += '<thead>'; //thead:열의 제목으로 구성된 행의 집합(한번만 사용)
+            table += '<tr>'; //행
+        } else {
+            table += '<tr>'; //행
+        }
+        var rowCells = allRows[singleRow].split(',');
+        for (var rowCell = 0; rowCell < rowCells.length; rowCell++) {
+            console.log('[' + rowCells[2] +']')
+            if (singleRow === 0) {
+                table += '<th>'; //열의 제목이 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</th>'; //열의 제목이 들어가는 셀
+            }else if (rowCells[1] == '국수(소면류)' ) {
+                table += '<td>'; //내용에 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</td>'; //내용이 들어가는 셀
+            }else {
+                continue;
+             }
+        }
+        if (singleRow === 0) {
+            table += '</tr>'; //행
+            table += '</thead>'; //열의 제목
+            table += '<tbody>'; //본문에 해당
+        } else {
+            table += '</tr>'; //행
+        }
+    }
+    table += '</tbody>';
+    table += '</table>';
+    $('#list_table12').html(table);
+   }
+  });
+});
+
+///csv2html_13
+$(document).ready(function(){
+  $.ajax({
+   url:"/static/prefer.csv",
+   dataType:"text",
+   success:function(data)
+   {
+    var allRows = data.split(/\r?\n|\r/);
+    var table = '<table>';
+    for (var singleRow = 0; singleRow < allRows.length; singleRow++) {
+        if (singleRow === 0) {
+            table += '<thead>'; //thead:열의 제목으로 구성된 행의 집합(한번만 사용)
+            table += '<tr>'; //행
+        } else {
+            table += '<tr>'; //행
+        }
+        var rowCells = allRows[singleRow].split(',');
+        for (var rowCell = 0; rowCell < rowCells.length; rowCell++) {
+            console.log('[' + rowCells[2] +']')
+            if (singleRow === 0) {
+                table += '<th>'; //열의 제목이 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</th>'; //열의 제목이 들어가는 셀
+            }else if (rowCells[1] == '김(류)' ) {
+                table += '<td>'; //내용에 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</td>'; //내용이 들어가는 셀
+            }else {
+                continue;
+             }
+        }
+        if (singleRow === 0) {
+            table += '</tr>'; //행
+            table += '</thead>'; //열의 제목
+            table += '<tbody>'; //본문에 해당
+        } else {
+            table += '</tr>'; //행
+        }
+    }
+    table += '</tbody>';
+    table += '</table>';
+    $('#list_table13').html(table);
+   }
+  });
+});
+
+///csv2html_14
+$(document).ready(function(){
+  $.ajax({
+   url:"/static/prefer.csv",
+   dataType:"text",
+   success:function(data)
+   {
+    var allRows = data.split(/\r?\n|\r/);
+    var table = '<table>';
+    for (var singleRow = 0; singleRow < allRows.length; singleRow++) {
+        if (singleRow === 0) {
+            table += '<thead>'; //thead:열의 제목으로 구성된 행의 집합(한번만 사용)
+            table += '<tr>'; //행
+        } else {
+            table += '<tr>'; //행
+        }
+        var rowCells = allRows[singleRow].split(',');
+        for (var rowCell = 0; rowCell < rowCells.length; rowCell++) {
+            console.log('[' + rowCells[2] +']')
+            if (singleRow === 0) {
+                table += '<th>'; //열의 제목이 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</th>'; //열의 제목이 들어가는 셀
+            }else if (rowCells[1] == '즉석밥류' ) {
+                table += '<td>'; //내용에 들어가는 셀
+                table += rowCells[rowCell];
+                table += '</td>'; //내용이 들어가는 셀
+            }else {
+                continue;
+             }
+        }
+        if (singleRow === 0) {
+            table += '</tr>'; //행
+            table += '</thead>'; //열의 제목
+            table += '<tbody>'; //본문에 해당
+        } else {
+            table += '</tr>'; //행
+        }
+    }
+    table += '</tbody>';
+    table += '</table>';
+    $('#list_table14').html(table);
+   }
+  });
+});
+
+</script>
+
+
+{% endblock %}
